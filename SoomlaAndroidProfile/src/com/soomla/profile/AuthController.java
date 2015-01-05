@@ -97,11 +97,11 @@ public class AuthController<T extends IAuthProvider> extends ProviderLoader<T> {
                             @Override
                             public void success(UserProfile userProfile) {
                                 UserProfileStorage.setUserProfile(userProfile);
-                                BusProvider.getInstance().post(new LoginFinishedEvent(userProfile, payload));
-
                                 if (reward != null) {
                                     reward.give();
                                 }
+
+                                BusProvider.getInstance().post(new LoginFinishedEvent(userProfile, payload));
                             }
 
                             @Override

@@ -86,11 +86,11 @@ public class SocialController extends AuthController<ISocialProvider> {
         socialProvider.updateStatus(status, new SocialCallbacks.SocialActionListener() {
             @Override
             public void success() {
-                BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, updateStatusType, payload));
-
                 if (reward != null) {
                     reward.give();
                 }
+
+                BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, updateStatusType, payload));
             }
 
             @Override
@@ -118,11 +118,11 @@ public class SocialController extends AuthController<ISocialProvider> {
         socialProvider.updateStatusDialog(link, new SocialCallbacks.SocialActionListener() {
             @Override
             public void success() {
-                BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, updateStatusType, payload));
-
                 if (reward != null) {
                     reward.give();
                 }
+
+                BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, updateStatusType, payload));
             }
 
             @Override
@@ -161,11 +161,11 @@ public class SocialController extends AuthController<ISocialProvider> {
                 new SocialCallbacks.SocialActionListener() {
                     @Override
                     public void success() {
-                        BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, updateStoryType, payload));
-
                         if (reward != null) {
                             reward.give();
                         }
+
+                        BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, updateStoryType, payload));
                     }
 
                     @Override
@@ -205,11 +205,11 @@ public class SocialController extends AuthController<ISocialProvider> {
                 new SocialCallbacks.SocialActionListener() {
                     @Override
                     public void success() {
-                        BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, updateStoryType, payload));
-
                         if (reward != null) {
                             reward.give();
                         }
+
+                        BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, updateStoryType, payload));
                     }
 
                     @Override
@@ -243,11 +243,11 @@ public class SocialController extends AuthController<ISocialProvider> {
         socialProvider.uploadImage(message, fileName, bitmap, jpegQuality, new SocialCallbacks.SocialActionListener() {
                     @Override
                     public void success() {
-                        BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, uploadImageType, payload));
-
                         if (reward != null) {
                             reward.give();
                         }
+
+                        BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, uploadImageType, payload));
                     }
 
                     @Override
@@ -279,11 +279,11 @@ public class SocialController extends AuthController<ISocialProvider> {
         socialProvider.uploadImage(message, filePath, new SocialCallbacks.SocialActionListener() {
                     @Override
                     public void success() {
-                        BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, uploadImageType, payload));
-
                         if (reward != null) {
                             reward.give();
                         }
+
+                        BusProvider.getInstance().post(new SocialActionFinishedEvent(provider, uploadImageType, payload));
                     }
 
                     @Override
@@ -312,11 +312,11 @@ public class SocialController extends AuthController<ISocialProvider> {
         socialProvider.getContacts(new SocialCallbacks.ContactsListener() {
                                        @Override
                                        public void success(List<UserProfile> contacts) {
-                                           BusProvider.getInstance().post(new GetContactsFinishedEvent(provider, getContactsType, contacts, payload));
-
                                            if (reward != null) {
                                                reward.give();
                                            }
+
+                                           BusProvider.getInstance().post(new GetContactsFinishedEvent(provider, getContactsType, contacts, payload));
                                        }
 
                                        @Override
@@ -345,11 +345,11 @@ public class SocialController extends AuthController<ISocialProvider> {
         socialProvider.getFeed(new SocialCallbacks.FeedListener() {
                                    @Override
                                    public void success(List<String> feedPosts) {
-                                       BusProvider.getInstance().post(new GetFeedFinishedEvent(provider, getFeedType, feedPosts, payload));
-
                                        if (reward != null) {
                                            reward.give();
                                        }
+
+                                       BusProvider.getInstance().post(new GetFeedFinishedEvent(provider, getFeedType, feedPosts, payload));
                                    }
 
                                    @Override
