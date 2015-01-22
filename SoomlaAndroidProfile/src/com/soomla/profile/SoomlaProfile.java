@@ -400,6 +400,10 @@ public class SoomlaProfile {
         getContacts(provider, "", reward);
     }
 
+    public void getContacts(IProvider.Provider provider, int pageNumber, final Reward reward) throws ProviderNotFoundException {
+        getContacts(provider, pageNumber, "", reward);
+    }
+
     /**
      * Fetches the user's contact list and grants the user a reward.
      *
@@ -410,7 +414,11 @@ public class SoomlaProfile {
      *                                   supported by the framework
      */
     public void getContacts(IProvider.Provider provider, String payload, final Reward reward) throws ProviderNotFoundException {
-        mSocialController.getContacts(provider, payload, reward);
+        getContacts(provider, 0, payload, reward);
+    }
+
+    public void getContacts(IProvider.Provider provider, int pageNumber, String payload, final Reward reward) throws ProviderNotFoundException {
+        mSocialController.getContacts(provider, pageNumber, payload, reward);
     }
 
     /**

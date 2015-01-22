@@ -497,7 +497,7 @@ public class SoomlaTwitter implements ISocialProvider {
      * {@inheritDoc}
      */
     @Override
-    public void getContacts(final SocialCallbacks.ContactsListener contactsListener) {
+    public void getContacts(final int pageNumber, final SocialCallbacks.ContactsListener contactsListener) {
         if (!isInitialized) {
             return;
         }

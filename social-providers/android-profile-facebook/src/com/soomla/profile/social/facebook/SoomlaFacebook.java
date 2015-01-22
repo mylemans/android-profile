@@ -41,6 +41,7 @@ import com.sromku.simple.fb.entities.Photo;
 import com.sromku.simple.fb.entities.Post;
 import com.sromku.simple.fb.entities.Profile;
 import com.sromku.simple.fb.entities.Story;
+import com.sromku.simple.fb.listeners.OnActionListener;
 import com.sromku.simple.fb.listeners.OnFriendsListener;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
@@ -196,7 +197,8 @@ public class SoomlaFacebook implements ISocialProvider {
                     break;
                 }
                 case ACTION_GET_CONTACTS: {
-                    getContacts(RefContactsListener);
+                    int pageNumber = intent.getIntExtra("pageNumber", 0);
+                    getContacts(pageNumber, RefContactsListener);
                     break;
                 }
                 default: {
@@ -536,7 +538,7 @@ public class SoomlaFacebook implements ISocialProvider {
             });
         }
 
-        private void getContacts(final SocialCallbacks.ContactsListener contactsListener) {
+        private void getContacts(final int pageNumber, final SocialCallbacks.ContactsListener contactsListener) {
             Profile.Properties properties = new Profile.Properties.Builder()
                     .add(Profile.Properties.ID)
 //                    .add(Profile.Properties.USER_NAME) //deprecated in v2
@@ -546,8 +548,7 @@ public class SoomlaFacebook implements ISocialProvider {
                     .add(Profile.Properties.LAST_NAME)
                     .add(Profile.Properties.PICTURE)
                     .build();
-            SimpleFacebook.getInstance().getFriends(properties, new OnFriendsListener() {
-
+            SimpleFacebook.getInstance().get(null, "friends?limit=25&offset=" + pageNumber, properties.getBundle(), new OnActionListener<List<Profile>>() {
                 @Override
                 public void onComplete(List<Profile> response) {
                     super.onComplete(response);
@@ -575,12 +576,48 @@ public class SoomlaFacebook implements ISocialProvider {
 
                 @Override
                 public void onFail(String reason) {
-                    contactsListener.fail("onFail: " + reason);
+                    super.onFail(reason);
                     SoomlaUtils.LogWarning(TAG, "getContacts/onFail:" + reason + " [" + contactsListener + "]");
                     clearListeners();
                     finish();
                 }
             });
+
+//            SimpleFacebook.getInstance().getFriends(properties, new OnFriendsListener() {
+//
+//                @Override
+//                public void onComplete(List<Profile> response) {
+//                    super.onComplete(response);
+//                    SoomlaUtils.LogDebug(TAG, "getContacts/onComplete " + response.size());
+//
+//                    List<UserProfile> userProfiles = new ArrayList<UserProfile>();
+//                    for (Profile profile : response) {
+//                        userProfiles.add(new UserProfile(
+//                                RefProvider, profile.getId(), profile.getUsername(), profile.getEmail(),
+//                                profile.getFirstName(), profile.getLastName()));
+//                    }
+//                    contactsListener.success(userProfiles);
+//                    clearListeners();
+//                    finish();
+//                }
+//
+//                @Override
+//                public void onException(Throwable throwable) {
+//                    super.onException(throwable);
+//                    SoomlaUtils.LogWarning(TAG, "getContacts/onException:" + throwable.getLocalizedMessage() + " [" + contactsListener + "]");
+//                    contactsListener.fail("onException: " + throwable.getLocalizedMessage());
+//                    clearListeners();
+//                    finish();
+//                }
+//
+//                @Override
+//                public void onFail(String reason) {
+//                    contactsListener.fail("onFail: " + reason);
+//                    SoomlaUtils.LogWarning(TAG, "getContacts/onFail:" + reason + " [" + contactsListener + "]");
+//                    clearListeners();
+//                    finish();
+//                }
+//            });
         }
 
         public void getFeed(final SocialCallbacks.FeedListener feedListener) {
@@ -847,11 +884,12 @@ public class SoomlaFacebook implements ISocialProvider {
      * {@inheritDoc}
      */
     @Override
-    public void getContacts(final SocialCallbacks.ContactsListener contactsListener) {
+    public void getContacts(final int pageNumber, final SocialCallbacks.ContactsListener contactsListener) {
         RefProvider = getProvider();
         RefContactsListener = contactsListener;
         Intent intent = new Intent(WeakRefParentActivity.get(), SoomlaFBActivity.class);
         intent.putExtra("action", ACTION_GET_CONTACTS);
+        intent.putExtra("pageNumber", pageNumber);
         WeakRefParentActivity.get().startActivity(intent);
     }
 

@@ -84,7 +84,7 @@ public interface ISocialProvider extends IAuthProvider {
      *
      * @param contactsListener a callback for this action
      */
-    void getContacts(SocialCallbacks.ContactsListener contactsListener);
+    void getContacts(int pageNumber, SocialCallbacks.ContactsListener contactsListener);
 
     /**
      * Fetches the user's feed.

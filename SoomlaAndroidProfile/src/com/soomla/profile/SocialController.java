@@ -364,13 +364,13 @@ public class SocialController extends AuthController<ISocialProvider> {
      * @throws ProviderNotFoundException if the supplied provider is not
      *                                   supported by the framework
      */
-    public void getContacts(final IProvider.Provider provider,
+    public void getContacts(final IProvider.Provider provider, final int pageNumber,
                             final String payload, final Reward reward) throws ProviderNotFoundException {
         final ISocialProvider socialProvider = getProvider(provider);
 
         final ISocialProvider.SocialActionType getContactsType = ISocialProvider.SocialActionType.GET_CONTACTS;
         BusProvider.getInstance().post(new GetContactsStartedEvent(provider, getContactsType, payload));
-        socialProvider.getContacts(new SocialCallbacks.ContactsListener() {
+        socialProvider.getContacts(pageNumber, new SocialCallbacks.ContactsListener() {
                                        @Override
                                        public void success(List<UserProfile> contacts) {
                                            BusProvider.getInstance().post(new GetContactsFinishedEvent(provider, getContactsType, contacts, payload));
